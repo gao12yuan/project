@@ -1,29 +1,44 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div>
+    <div class="block">
+      <span class="demonstration">默认</span>
+      <el-slider v-model="value1"></el-slider>
     </div>
-    <router-view/>
+    <div class="block">
+      <span class="demonstration">自定义初始值</span>
+      <el-slider v-model="value2"></el-slider>
+    </div>
+    <div class="block">
+      <span class="demonstration">隐藏 Tooltip</span>
+      <el-slider v-model="value3" :show-tooltip="false"></el-slider>
+    </div>
+    <div class="block">
+      <span class="demonstration">格式化 Tooltip</span>
+      <el-slider v-model="value4" :format-tooltip="formatTooltip"></el-slider>
+    </div>
+    <div class="block">
+      <span class="demonstration">禁用</span>
+      <el-slider v-model="value5" disabled></el-slider>
+    </div>
   </div>
 </template>
-
-<style lang="less">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
+<script>
+export default {
+  data () {
+    return {
+      value1: 0,
+      value2: 50,
+      value3: 36,
+      value4: 48,
+      value5: 42
+    }
+  },
+  methods: {
+    formatTooltip (val) {
+      return val / 100
     }
   }
 }
+</script>
+<style>
 </style>
