@@ -54,12 +54,19 @@ export default {
         code: '',
         argee: ''
       },
+      // 登录过程禁用登录按钮
       loginLoading: false,
+      // 通过 initGeetest 得到的极验验证码对象
       captchaObj: null,
+      // 剩余多少时间
       countMsecod: '10',
+      // 倒计时定时器
       codeTimer: null,
+      // // 保存初始化验证码之后发送短信的手机号
       sendMobile: '',
+      // 初始化验证码期间，禁用按钮的点击状态
       codeLoading: false,
+      // 检验规则
       rules: {
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'blur' },
@@ -77,11 +84,15 @@ export default {
     }
   },
   methods: {
+    // 点击登录按钮
     handelLogin () {
+      // 检验是否成功
       this.$refs['formInput'].validate((valid) => {
         if (!valid) {
+          // 如过不成功结束不执行下面代码
           return
         }
+        // 如果成功调用submitLogin方法（封装登录有没有成功）
         this.submitLogin()
       })
     },
@@ -93,6 +104,8 @@ export default {
         data: this.formInput
       }).then(res => {
         console.log(res.data)
+        // 本地储存
+        window.localStorage.setItem('user-info', JSON.stringify(res.data.data))
         this.$message({
           message: '登录成功',
           type: 'success'
@@ -104,12 +117,16 @@ export default {
         this.loginLoading = false
       })
     },
+    // 点击获取验证码按钮
     handelGet () {
       // 检测手机号码十分有效
       this.$refs['formInput'].validateField('mobile', errorMessage => {
+        // errorMessage返回字符串提示语
+        console.log(errorMessage)
         if (errorMessage.trim().length > 0) {
           return
         }
+        // 如果已经初始化了这个验证码对象
         if (this.captchaObj) {
           // 如果用户输入的手机号和之前初始化的验证码手机号不一致，就基于当前手机号码重新初始化
           // 否则，直接 verify 显示
@@ -119,13 +136,16 @@ export default {
             // 手机号码发送改变，重新初始化验证码插件
             this.showGet()
           } else {
+            // 直接显示人机验证图
             this.captchaObj.verify()
           }
         } else {
+          // 重新初始化
           this.showGet()
         }
       })
     },
+    // 封装极验验证
     showGet () {
       // const { mobile } = this.formInput
       // if (this.captchaObj) {
@@ -170,12 +190,18 @@ export default {
         })
       })
     },
+    // 封装定时器
     codeCount () {
       this.codeTimer = window.setInterval(() => {
+        // 时间减减
         this.countMsecod--
-        if (this.countMsecod < 0) {
+        // 如果时间小于等于0 清除定时器
+        if (this.countMsecod <= 0) {
+          // 把事件恢复初始化；
           this.countMsecod = 10
+          // 清除定时器
           window.clearInterval(this.codeTimer)
+          // 清空后初始化倒即定时器
           this.codeTimer = null
         }
       }, 1000)
