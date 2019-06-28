@@ -13,7 +13,29 @@ const router = new Router({
       name: 'home',
       path: '/',
       component: () => import('@/views/home')
-    }]
+    },
+    {
+      name: 'article',
+      path: '/article',
+      component: () => import('@/views/article')
+    },
+    {
+      name: 'publish-edit',
+      path: '/publish/:id',
+      component: () => import('@/views/publish')
+    },
+    {
+      name: 'publish',
+      path: '/publish',
+      component: () => import('@/views/publish')
+    },
+    {
+      name: 'comment',
+      path: '/comment',
+      component: () => import('@/views/comment')
+    }
+
+    ]
   },
 
   {
@@ -23,8 +45,11 @@ const router = new Router({
   }
   ]
 })
+// 拦截守卫
 router.beforeEach((to, from, next) => {
+  // 进度条
   nprogress.start()
+  // 获取本地储存
   const userInfo = window.localStorage.getItem('user-info')
   // 判断是否是登录页面
   if (to.path !== '/login') {

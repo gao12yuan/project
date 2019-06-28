@@ -43,16 +43,16 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+
 import '@/vendor/gt'
 export default {
   name: 'AppLogin',
   data () {
     return {
       formInput: {
-        mobile: '15611236858',
-        code: '',
-        argee: ''
+        mobile: '15690758079',
+        code: '246810',
+        argee: true
       },
       // 登录过程禁用登录按钮
       loginLoading: false,
@@ -98,14 +98,14 @@ export default {
     },
     submitLogin () {
       this.loginLoading = true
-      axios({
+      this.$http({
         method: 'POST',
-        url: 'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+        url: '/authorizations',
         data: this.formInput
-      }).then(res => {
-        console.log(res.data)
+      }).then(data => {
+        // console.log(res.data)
         // 本地储存
-        window.localStorage.setItem('user-info', JSON.stringify(res.data.data))
+        window.localStorage.setItem('user-info', JSON.stringify(data))
         this.$message({
           message: '登录成功',
           type: 'success'
@@ -147,16 +147,12 @@ export default {
     },
     // 封装极验验证
     showGet () {
-      // const { mobile } = this.formInput
-      // if (this.captchaObj) {
-      //   return this.captchaObj.verify()
-      // }
       this.codeLoading = true
-      axios({
+      this.$http({
         method: 'GET',
-        url: `http://ttapi.research.itcast.cn/mp/v1_0/captchas/${this.formInput.mobile}`
-      }).then(res => {
-        const data = res.data.data
+        url: `/captchas/${this.formInput.mobile}`
+      }).then(data => {
+        // const data = res.data.data
         window.initGeetest({
           // 以下配置参数来自服务端 SDK
           gt: data.gt,
@@ -174,16 +170,16 @@ export default {
           }).onSuccess(() => {
             // console.log(captchaObj.getValidate())
             const { geetest_challenge: challenge, geetest_seccode: seccode, geetest_validate: validate } = captchaObj.getValidate()
-            axios({
+            this.$http({
               method: 'GET',
-              url: `http://ttapi.research.itcast.cn/mp/v1_0/sms/codes/${this.formInput.mobile}`,
+              url: `/sms/codes/${this.formInput.mobile}`,
               params: {
                 challenge,
                 seccode,
                 validate
               }
-            }).then(res => {
-              console.log(res.data)
+            }).then(data => {
+              // console.log(res.data)
               this.codeCount()
             })
           })

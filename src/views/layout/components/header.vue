@@ -3,7 +3,7 @@
     <el-col :span="14">
       <p>江苏传智播客教育科技股份有限公司</p>
     </el-col>
-    <el-col :span="10">
+    <el-col :span="5" :push="5">
       <el-dropdown>
         <span class="el-dropdown-link">
           <img width="30"

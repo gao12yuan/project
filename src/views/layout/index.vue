@@ -40,7 +40,7 @@ export default {
   }
 }
 .el-header {
-  background-color: #b2bfd0;
+  background-color: #fff;
 }
 .el-icon-arrow-down {
   background-color: #e8edf2;
