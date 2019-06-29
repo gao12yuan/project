@@ -16,8 +16,10 @@
       <el-table-column label="允许评论">
         <template slot-scope="scope">
           <el-switch v-model="scope.row.comment_status"
+                     :disabled="scope.row.changeLoading"
                      active-color="#13ce66"
-                     inactive-color="#ff4949">
+                     inactive-color="#ff4949"
+                     @change='handelChandeComment(scope.row)'>
           </el-switch>
         </template>
       </el-table-column>
@@ -53,9 +55,37 @@ export default {
         }
       }).then(data => {
         console.log(data)
+        data.results.forEach(item => {
+          item.changeLoading = false
+        })
         this.article = data.results
       })
+    },
+    handelChandeComment (item) {
+      item.changeLoading = true
+      this.$http({
+        method: 'PUT',
+        url: '/comments/status',
+        params: {
+          article_id: item.id + ''
+        },
+        data: {
+          allow_comment: item.comment_status
+        }
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '修改评论状态成功'
+        })
+        item.changeLoading = false
+      }).catch(err => {
+        console.log(err)
+        item.comment_status = !item.comment_status
+        this.$$message.error('修改评论状态失败')
+        item.changeLoading = false
+      })
     }
+
   }
 }
 </script>

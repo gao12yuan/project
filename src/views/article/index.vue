@@ -89,6 +89,7 @@
                      layout="prev, pager, next"
                      :total="totalCount"
                      :disabled='loading'
+                     :current-page="page"
                      @current-change="getPagination">
       </el-pagination>
     </el-card>
@@ -186,6 +187,7 @@ export default {
       })
     },
     onSubmit () {
+      this.page = 1
       this.getContent()
     },
     // 页面变化才会调用此函数

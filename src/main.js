@@ -11,6 +11,7 @@ import 'nprogress/nprogress.css'
 import JSONbig from 'json-bigint'
 // 引入axios
 import axios from 'axios'
+import store from './store'
 
 // 配置基本路径
 // axios.defaults.baseURL = 'http://toutiao.course.itcast.cn/mp/v1_0/'
@@ -69,5 +70,6 @@ Vue.use(ElementUI)
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')
