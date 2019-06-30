@@ -38,6 +38,11 @@ const router = new Router({
       name: 'user',
       path: '/user',
       component: () => import('@/views/user')
+    },
+    {
+      name: 'image',
+      path: '/image',
+      component: () => import('@/views/image')
     }
 
     ]
