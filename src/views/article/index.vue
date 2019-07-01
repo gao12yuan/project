@@ -80,7 +80,7 @@
             <el-button type="primary"
                        @click="handelClick(scope.row)">删除</el-button>
             <el-button type="success"
-                       @click="$router.push(`/publish/${scope.row.id}`)">编辑</el-button>
+                       @click="$router.push(`/edit/${scope.row.id}`)">编辑</el-button>
           </template>
 
         </el-table-column>
