@@ -96,6 +96,7 @@ export default {
         this.submitLogin()
       })
     },
+    // 封装登录
     submitLogin () {
       this.loginLoading = true
       this.$http({

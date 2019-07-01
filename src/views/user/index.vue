@@ -28,12 +28,9 @@
     </el-col>
     <el-col :span="8"
             :offset="4">
-
       <el-upload class="avatar-uploader"
                  action="http://ttapi.research.itcast.cn/mp/v1_0/user/photo"
                  :show-file-list="false"
-                 :on-success="handleAvatarSuccess"
-                 :before-upload="beforeAvatarUpload"
                  :http-request="handleUpload">
         <img v-if="userInfo.photo"
              :src="userInfo.photo"
@@ -88,8 +85,8 @@ export default {
         this.userInfo = data
       })
     },
-    handleAvatarSuccess () { },
-    beforeAvatarUpload () { },
+
+    // 上传图片
     handleUpload (data) {
       // console.log(data)
       const formData = new FormData()

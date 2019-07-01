@@ -2,10 +2,10 @@
   <el-card>
     <div slot="header"
          class="clearfix">
-      <span>发布文章</span>
+      <span>编辑文章</span>
     </div>
     <el-form label-width="80px"
-             v-loading="isEdit && formLoading">
+             v-loading="formLoading">
       <el-form-item label="标题">
         <el-input placeholder="文章标题"
                   v-model="pubishContent.title"></el-input>
@@ -42,7 +42,7 @@
     </el-form>
     <el-button type="success"
                :loading="publishLoading"
-               @click="handelPost(false)">{{isEdit ? '更新' : '发表'}}</el-button>
+               @click="handelPost(false)">更新 </el-button>
     <el-button type="primary"
                :loading="publishLoading"
                @click="handelPost(true)">存入草稿</el-button>
@@ -55,14 +55,14 @@ import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import { quillEditor } from 'vue-quill-editor'
 import ArticleChannel from '@/components/article-channel'
-import UploadImage from './components/image'
+import UploadImage from '../publish/components/image'
 export default {
   components: {
     quillEditor,
     ArticleChannel,
     UploadImage
   },
-  name: 'publish',
+  name: 'edit',
   data () {
     return {
       editorOption: {
@@ -83,35 +83,14 @@ export default {
   },
   created () {
     console.log(this.$route)
-    if (this.isEdit) {
-      this.loadArticle()
-    }
+    this.loadArticle()
   },
   methods: {
     onEditorChange ({ quill, html, text }) {
       console.log('editor change!', quill, html, text)
       this.content = html
     },
-    // 发布文章
-    submitAdd (draft) {
-      return this.$http({
-        method: 'POST',
-        url: '/articles',
-        data: this.pubishContent,
-        params: {
-          draft
-        }
-      }).then(data => {
-        // console.log(data)
-        this.$message({
-          type: 'success',
-          message: '发布成功'
-        })
-      }).catch(err => {
-        console.log(err)
-        this.$message.error('发布')
-      })
-    },
+
     // 修改文章
     submitUpdate (draft) {
       return this.$http({
@@ -130,17 +109,11 @@ export default {
     },
     handelPost (draft = false) {
       this.publishLoading = true
-      if (this.isEdit) {
-        this.submitUpdate(draft).then(() => {
-          this.publishLoading = false
-        })
-      } else {
-        this.submitAdd(draft).then(() => {
-          this.publishLoading = false
-        })
-      }
-    },
 
+      this.submitUpdate(draft).then(() => {
+        this.publishLoading = false
+      })
+    },
     // 编辑文章获取文章信息
     loadArticle () {
       this.formLoading = true
@@ -157,12 +130,10 @@ export default {
       })
     }
   },
+
   computed: {
     editor () {
       return this.$refs.myQuillEditor.quill
-    },
-    isEdit () {
-      return this.$route.name === 'publish-edit'
     },
     isId () {
       return this.$route.params.id
