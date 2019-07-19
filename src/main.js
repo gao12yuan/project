@@ -4,6 +4,8 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import VueResource from 'vue-resource'
+
 import './styles/index.less'
 // 引入nprogress里得css
 import 'nprogress/nprogress.css'
@@ -43,7 +45,7 @@ axios.interceptors.request.use(config => {
 // 响应器
 axios.interceptors.response.use(response => {
   // 判断返回数据格式是对象
-  if (typeof response.data === 'object') {
+  if (response.data.data) {
     return response.data.data
   } else {
     return response.data
@@ -71,5 +73,6 @@ Vue.use(ElementUI)
 new Vue({
   router,
   store,
+  VueResource,
   render: h => h(App)
 }).$mount('#app')

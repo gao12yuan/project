@@ -47,6 +47,7 @@
 <script>
 export default {
   name: 'updataImage',
+  // value就是cover.images[索引]的图片
   props: ['value'],
   data () {
     return {

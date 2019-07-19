@@ -39,12 +39,13 @@ export default {
       })
     },
     // 更新图片数据
-    loadData () {
-      this.$http({
-        method: 'GET',
-        url: 'http://localhost:3000/barData'
-      }).then(data => {
-        console.log(data)
+    async loadData () {
+      try {
+        const data = await
+        this.$http({
+          method: 'GET',
+          url: 'http://localhost:3000/barData'
+        })
         this.myChart.setOption({
           xAxis: {
             data: data.xAxisData
@@ -55,7 +56,10 @@ export default {
             data: data.seriesData
           }]
         })
-      })
+      } catch (err) {
+        console.log(err)
+        this.$message.error('更新图片失败')
+      }
     }
   }
 }

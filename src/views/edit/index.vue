@@ -91,21 +91,24 @@ export default {
       this.content = html
     },
 
-    // 修改文章
-    submitUpdate (draft) {
-      return this.$http({
-        method: 'PUT',
-        url: `/articles/${this.isId}`,
-        params: {
-          draft
-        },
-        data: this.pubishContent
-      }).then(data => {
+    // 修改文章  异步函数
+    async submitUpdate (draft) {
+      try {
+        const data = await
+        this.$http({
+          method: 'PUT',
+          url: `/articles/${this.isId}`,
+          params: {
+            draft
+          },
+          data: this.pubishContent
+        })
+        // 接收数据
         this.pubishContent = data
-      }).catch(err => {
+      } catch (err) {
         console.log(err)
         this.$message.error('发布')
-      })
+      }
     },
     handelPost (draft = false) {
       this.publishLoading = true
@@ -115,19 +118,21 @@ export default {
       })
     },
     // 编辑文章获取文章信息
-    loadArticle () {
-      this.formLoading = true
-      this.$http({
-        method: 'GET',
-        url: `/articles/${this.isId}`
-      }).then(data => {
+    async loadArticle () {
+      try {
+        this.formLoading = true
+        const data = await
+        this.$http({
+          method: 'GET',
+          url: `/articles/${this.isId}`
+        })
         console.log(data)
         this.pubishContent = data
         this.formLoading = false
-      }).catch(err => {
+      } catch (err) {
         console.log(err)
         this.$message.error('加载详情失败')
-      })
+      }
     }
   },
 
